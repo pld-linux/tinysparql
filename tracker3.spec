@@ -9,12 +9,12 @@
 Summary:	Tracker 3 - an indexing subsystem
 Summary(pl.UTF-8):	Tracker 3 - podsystem indeksujący
 Name:		tracker3
-Version:	3.0.0
+Version:	3.0.1
 Release:	1
 License:	GPL v2+
 Group:		Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/3.0/tracker-%{version}.tar.xz
-# Source0-md5:	6dc882c1cdcaf5a1cb3b14c58f52a005
+# Source0-md5:	173668f5d1a890a494d681457ac7029b
 URL:		https://wiki.gnome.org/Projects/Tracker
 BuildRequires:	asciidoc
 BuildRequires:	dbus-devel >= 1.3.1
@@ -36,7 +36,7 @@ BuildRequires:	meson >= 0.50
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
 BuildRequires:	python3 >= 1:3.2
-BuildRequires:	rpmbuild(macros) >= 1.736
+BuildRequires:	rpmbuild(macros) >= 1.752
 BuildRequires:	sqlite3-devel >= 3.29
 BuildRequires:	tar >= 1:1.22
 %{?with_vala:BuildRequires:	vala >= 2:0.18.0}
@@ -121,9 +121,7 @@ Summary:	Tracker 3 library API documentation
 Summary(pl.UTF-8):	Dokumentacja API biblioteki Trackera 3
 Group:		Documentation
 Requires:	gtk-doc-common
-%if "%{_rpmversion}" >= "4.6"
-BuildArch:	noarch
-%endif
+%{?noarchpackage}
 
 %description apidocs
 Tracker 3 library API documentation.
@@ -150,9 +148,7 @@ Summary(pl.UTF-8):	API Trackera 3 dla języka Vala
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 Requires:	vala >= 2:0.18.0
-%if "%{_rpmversion}" >= "4.6"
-BuildArch:	noarch
-%endif
+%{?noarchpackage}
 
 %description -n vala-tracker3
 Tracker 3 API for Vala language.
