@@ -121,7 +121,7 @@ Summary:	Tracker 3 library API documentation
 Summary(pl.UTF-8):	Dokumentacja API biblioteki Trackera 3
 Group:		Documentation
 Requires:	gtk-doc-common
-%{?noarchpackage}
+BuildArch:	noarch
 
 %description apidocs
 Tracker 3 library API documentation.
@@ -148,7 +148,7 @@ Summary(pl.UTF-8):	API Trackera 3 dla języka Vala
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 Requires:	vala >= 2:0.18.0
-%{?noarchpackage}
+BuildArch:	noarch
 
 %description -n vala-tracker3
 Tracker 3 API for Vala language.
