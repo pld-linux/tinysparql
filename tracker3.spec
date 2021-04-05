@@ -1,7 +1,7 @@
 #
 # Conditional build:
 %bcond_without	apidocs		# API documentation
-%bcond_with	icu		# libicu instead of libunistring
+%bcond_without	icu		# libicu instead of libunistring [the latter not supported in 3.1.1]
 %bcond_with	static_libs	# static libraries
 %bcond_without	vala		# Vala API
 
@@ -9,12 +9,12 @@
 Summary:	Tracker 3 - an indexing subsystem
 Summary(pl.UTF-8):	Tracker 3 - podsystem indeksujący
 Name:		tracker3
-Version:	3.0.3
+Version:	3.1.1
 Release:	1
 License:	GPL v2+
 Group:		Applications
-Source0:	https://download.gnome.org/sources/tracker/3.0/tracker-%{version}.tar.xz
-# Source0-md5:	9ba66827bb5271c9e477980639d9873b
+Source0:	https://download.gnome.org/sources/tracker/3.1/tracker-%{version}.tar.xz
+# Source0-md5:	c7a502802f213a6cb9a7b2fc94ef47d1
 URL:		https://wiki.gnome.org/Projects/Tracker
 BuildRequires:	asciidoc
 BuildRequires:	dbus-devel >= 1.3.1
@@ -36,8 +36,9 @@ BuildRequires:	meson >= 0.50
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
 BuildRequires:	python3 >= 1:3.2
+BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 1.752
-BuildRequires:	sqlite3-devel >= 3.29
+BuildRequires:	sqlite3-devel >= 3.35.2
 BuildRequires:	tar >= 1:1.22
 %{?with_vala:BuildRequires:	vala >= 2:0.18.0}
 BuildRequires:	xz
@@ -63,7 +64,7 @@ Requires:	glib2 >= 1:2.52.0
 Requires:	json-glib >= 1.0
 Requires:	libsoup >= 2.40
 Requires:	libxml2 >= 1:2.6.31
-Requires:	sqlite3 >= 3.29
+Requires:	sqlite3 >= 3.35.2
 
 %description libs
 Tracker 3 library.
@@ -135,6 +136,7 @@ Summary(pl.UTF-8):	Bashowe uzupełnianie parametrów dla polecenia tracker3
 Group:		Applications/Shells
 Requires:	%{name} = %{version}-%{release}
 Requires:	bash-completion >= 2.0
+BuildArch:	noarch
 
 %description -n bash-completion-tracker3
 Bash completion for tracker3 command.
