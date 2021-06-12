@@ -1,7 +1,7 @@
 #
 # Conditional build:
 %bcond_without	apidocs		# API documentation
-%bcond_without	icu		# libicu instead of libunistring [the latter not supported in 3.1.1]
+%bcond_without	icu		# libicu instead of libunistring [the latter broken since 3.1.1]
 %bcond_with	static_libs	# static libraries
 %bcond_without	vala		# Vala API
 
@@ -9,12 +9,12 @@
 Summary:	Tracker 3 - an indexing subsystem
 Summary(pl.UTF-8):	Tracker 3 - podsystem indeksujący
 Name:		tracker3
-Version:	3.1.1
+Version:	3.1.2
 Release:	1
 License:	GPL v2+
 Group:		Applications
 Source0:	https://download.gnome.org/sources/tracker/3.1/tracker-%{version}.tar.xz
-# Source0-md5:	c7a502802f213a6cb9a7b2fc94ef47d1
+# Source0-md5:	c2a38ecdfb792b25f6190092b69b15d3
 URL:		https://wiki.gnome.org/Projects/Tracker
 BuildRequires:	asciidoc
 BuildRequires:	dbus-devel >= 1.3.1
