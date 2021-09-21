@@ -2,6 +2,7 @@
 # Conditional build:
 %bcond_without	apidocs		# API documentation
 %bcond_without	icu		# libicu instead of libunistring [the latter broken since 3.1.1]
+%bcond_with	libsoup3	# libsoup3 support
 %bcond_with	static_libs	# static libraries
 %bcond_without	vala		# Vala API
 
@@ -9,30 +10,31 @@
 Summary:	Tracker 3 - an indexing subsystem
 Summary(pl.UTF-8):	Tracker 3 - podsystem indeksujący
 Name:		tracker3
-Version:	3.1.2
-Release:	2
+Version:	3.2.0
+Release:	1
 License:	GPL v2+
 Group:		Applications
-Source0:	https://download.gnome.org/sources/tracker/3.1/tracker-%{version}.tar.xz
-# Source0-md5:	c2a38ecdfb792b25f6190092b69b15d3
+Source0:	https://download.gnome.org/sources/tracker/3.2/tracker-%{version}.tar.xz
+# Source0-md5:	28a1deac6320174c82a1941722870708
 URL:		https://wiki.gnome.org/Projects/Tracker
 BuildRequires:	asciidoc
 BuildRequires:	dbus-devel >= 1.3.1
-BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-tools
 BuildRequires:	glib2-devel >= 1:2.52.0
 BuildRequires:	gobject-introspection-devel >= 0.10.0
 BuildRequires:	graphviz
-BuildRequires:	gtk-doc >= 1.8
-BuildRequires:	json-glib-devel >= 1.0
+# dist tarballs contain pregenerated docs
+#BuildRequires:	hotdoc
+BuildRequires:	json-glib-devel >= 1.4
 %{?with_icu:BuildRequires:	libicu-devel >= 4.8.1.1}
-BuildRequires:	libsoup-devel >= 2.40
+%{!?with_libsoup3:BuildRequires:	libsoup-devel >= 2.40}
+%{?with_libsoup3:BuildRequires:	libsoup3-devel >= 2.99.2}
 BuildRequires:	libstemmer-devel
 %{!?with_icu:BuildRequires:	libunistring-devel}
 BuildRequires:	libuuid-devel
 BuildRequires:	libxml2-devel >= 1:2.6.31
 BuildRequires:	libxslt-progs
-BuildRequires:	meson >= 0.50
+BuildRequires:	meson >= 0.51
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
 BuildRequires:	python3 >= 1:3.2
@@ -41,6 +43,7 @@ BuildRequires:	rpmbuild(macros) >= 1.752
 BuildRequires:	sqlite3-devel >= 3.35.2
 BuildRequires:	tar >= 1:1.22
 %{?with_vala:BuildRequires:	vala >= 2:0.18.0}
+%{?with_libsoup3:BuildRequires:	vala-libsoup3 >= 2.99.2}
 BuildRequires:	xz
 BuildRequires:	zlib-devel
 Requires(post,postun):	glib2 >= 1:2.52.0
@@ -61,8 +64,9 @@ Summary(pl.UTF-8):	Biblioteka Trackera 3
 License:	LGPL v2.1+
 Group:		Libraries
 Requires:	glib2 >= 1:2.52.0
-Requires:	json-glib >= 1.0
-Requires:	libsoup >= 2.40
+Requires:	json-glib >= 1.4
+%{!?with_soup3:Requires:	libsoup >= 2.40}
+%{?with_soup3:Requires:	libsoup3 >= 2.99.2}
 Requires:	libxml2 >= 1:2.6.31
 Requires:	sqlite3 >= 3.35.2
 
@@ -79,8 +83,7 @@ License:	LGPL v2.1+
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	glib2-devel >= 1:2.52.0
-Requires:	json-glib-devel >= 1.0
-Requires:	libsoup-devel >= 2.40
+Requires:	json-glib-devel >= 1.4
 Requires:	libstemmer-devel
 Requires:	libxml2-devel >= 1:2.6.31
 
@@ -161,6 +164,12 @@ API Trackera 3 dla języka Vala.
 %prep
 %setup -q -n tracker-%{version}
 
+%if %{with libsoup3}
+%{__sed} -i -e 's/libsoup2\.found()/false/' meson.build src/libtracker-sparql/meson.build
+%else
+%{__sed} -i -e 's/libsoup3\.found()/false/' meson.build src/libtracker-sparql/meson.build
+%endif
+
 %build
 CPPFLAGS="%{rpmcppflags} -I/usr/include/libstemmer"
 %meson build \
@@ -217,6 +226,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libtracker-sparql-%{abiver}.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libtracker-sparql-%{abiver}.so.0
 %{_libdir}/girepository-1.0/Tracker-%{abiver}.typelib
+%dir %{_libdir}/tracker-%{abiver}
+%if %{with libsoup3}
+%attr(755,root,root) %{_libdir}/tracker-%{abiver}/libtracker-remote-soup3.so
+%else
+%attr(755,root,root) %{_libdir}/tracker-%{abiver}/libtracker-remote-soup2.so
+%endif
 
 %files devel
 %defattr(644,root,root,755)
@@ -233,7 +248,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files testutils
 %defattr(644,root,root,755)
-%dir %{_libdir}/tracker-%{abiver}
 %dir %{_libdir}/tracker-%{abiver}/trackertestutils
 %attr(755,root,root) %{_libdir}/tracker-%{abiver}/trackertestutils/tracker-sandbox
 %{_libdir}/tracker-%{abiver}/trackertestutils/*.py
@@ -242,8 +256,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with apidocs}
 %files apidocs
 %defattr(644,root,root,755)
-%{_gtkdocdir}/libtracker-sparql-3
-%{_gtkdocdir}/ontology-3
+%{_datadir}/devhelp/books/Tracker
 %endif
 
 %files -n bash-completion-tracker3
