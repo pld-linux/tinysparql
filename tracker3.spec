@@ -11,7 +11,7 @@ Summary:	Tracker 3 - an indexing subsystem
 Summary(pl.UTF-8):	Tracker 3 - podsystem indeksujący
 Name:		tracker3
 Version:	3.2.1
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Applications
 Source0:	https://download.gnome.org/sources/tracker/3.2/tracker-%{version}.tar.xz
@@ -39,7 +39,7 @@ BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
 BuildRequires:	python3 >= 1:3.2
 BuildRequires:	rpm-build >= 4.6
-BuildRequires:	rpmbuild(macros) >= 1.752
+BuildRequires:	rpmbuild(macros) >= 2.011
 BuildRequires:	sqlite3-devel >= 3.35.2
 BuildRequires:	tar >= 1:1.22
 %{?with_vala:BuildRequires:	vala >= 2:0.18.0}
@@ -47,9 +47,10 @@ BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 BuildRequires:	zlib-devel
 Requires(post,postun):	glib2 >= 1:2.52.0
+Requires(post,preun):	systemd-units >= 1:250.1
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	dbus >= 1.3.1
-Requires:	systemd-units >= 1:242
+Requires:	systemd-units >= 1:250.1
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -195,6 +196,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post
+%systemd_user_post tracker-xdg-portal-3.service
+
+%preun
+%systemd_user_preun tracker-xdg-portal-3.service
 
 %post	libs -p /sbin/ldconfig
 %postun	libs -p /sbin/ldconfig
