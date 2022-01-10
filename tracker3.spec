@@ -11,7 +11,7 @@ Summary:	Tracker 3 - an indexing subsystem
 Summary(pl.UTF-8):	Tracker 3 - podsystem indeksujący
 Name:		tracker3
 Version:	3.2.1
-Release:	2
+Release:	3
 License:	GPL v2+
 Group:		Applications
 Source0:	https://download.gnome.org/sources/tracker/3.2/tracker-%{version}.tar.xz
@@ -177,7 +177,6 @@ CPPFLAGS="%{rpmcppflags} -I/usr/include/libstemmer"
 	%{!?with_static_libs:--default-library=shared} \
 	-Dbash_completion_dir=%{bash_compdir} \
 	%{!?with_apidocs:-Ddocs=false} \
-	-Dfunctional_tests=false \
 	-Dsystemd_user_services_dir=%{systemduserunitdir} \
 	-Dunicode_support=%{?with_icu:icu}%{!?with_icu:unistring}
 
