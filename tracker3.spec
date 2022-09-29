@@ -2,7 +2,8 @@
 # Conditional build:
 %bcond_without	apidocs		# API documentation
 %bcond_without	icu		# libicu instead of libunistring [the latter broken since 3.1.1]
-%bcond_with	libsoup3	# libsoup3 support
+%bcond_without	libsoup2	# libsoup2 support module
+%bcond_without	libsoup3	# libsoup3 support module
 %bcond_with	static_libs	# static libraries
 %bcond_without	vala		# Vala API
 
@@ -10,12 +11,12 @@
 Summary:	Tracker 3 - an indexing subsystem
 Summary(pl.UTF-8):	Tracker 3 - podsystem indeksujący
 Name:		tracker3
-Version:	3.3.3
+Version:	3.4.0
 Release:	1
 License:	GPL v2+
 Group:		Applications
-Source0:	https://download.gnome.org/sources/tracker/3.3/tracker-%{version}.tar.xz
-# Source0-md5:	40273333eb3000d435b83e6debf8b895
+Source0:	https://download.gnome.org/sources/tracker/3.4/tracker-%{version}.tar.xz
+# Source0-md5:	e180c2627325fbe83b9237252e301083
 URL:		https://wiki.gnome.org/Projects/Tracker
 BuildRequires:	asciidoc
 BuildRequires:	dbus-devel >= 1.3.1
@@ -27,14 +28,14 @@ BuildRequires:	graphviz
 #BuildRequires:	hotdoc
 BuildRequires:	json-glib-devel >= 1.4
 %{?with_icu:BuildRequires:	libicu-devel >= 4.8.1.1}
-%{!?with_libsoup3:BuildRequires:	libsoup-devel >= 2.40}
+%{?with_libsoup2:BuildRequires:	libsoup-devel >= 2.40}
 %{?with_libsoup3:BuildRequires:	libsoup3-devel >= 2.99.2}
 BuildRequires:	libstemmer-devel
 %{!?with_icu:BuildRequires:	libunistring-devel}
 BuildRequires:	libuuid-devel
 BuildRequires:	libxml2-devel >= 1:2.6.31
 BuildRequires:	libxslt-progs
-BuildRequires:	meson >= 0.51
+BuildRequires:	meson >= 0.53
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
 BuildRequires:	python3 >= 1:3.2
@@ -67,8 +68,8 @@ License:	LGPL v2.1+
 Group:		Libraries
 Requires:	glib2 >= 1:2.52.0
 Requires:	json-glib >= 1.4
-%{!?with_soup3:Requires:	libsoup >= 2.40}
-%{?with_soup3:Requires:	libsoup3 >= 2.99.2}
+%{?with_libsoup2:Requires:	libsoup >= 2.40}
+%{?with_libsoup3:Requires:	libsoup3 >= 2.99.2}
 Requires:	libxml2 >= 1:2.6.31
 Requires:	sqlite3 >= 3.35.2
 
@@ -166,18 +167,13 @@ API Trackera 3 dla języka Vala.
 %prep
 %setup -q -n tracker-%{version}
 
-%if %{with libsoup3}
-%{__sed} -i -e 's/libsoup2\.found()/false/' meson.build src/libtracker-sparql/meson.build
-%else
-%{__sed} -i -e 's/libsoup3\.found()/false/' meson.build src/libtracker-sparql/meson.build
-%endif
-
 %build
 CPPFLAGS="%{rpmcppflags} -I/usr/include/libstemmer"
 %meson build \
 	%{!?with_static_libs:--default-library=shared} \
 	-Dbash_completion_dir=%{bash_compdir} \
 	%{!?with_apidocs:-Ddocs=false} \
+	-Dsoup=%{?with_libsoup2:soup2%{?with_libsoup3:,}}%{?with_libsoup3:soup3} \
 	-Dsystemd_user_services_dir=%{systemduserunitdir} \
 	-Dunicode_support=%{?with_icu:icu}%{!?with_icu:unistring}
 
@@ -234,10 +230,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %ghost %{_libdir}/libtracker-sparql-%{abiver}.so.0
 %{_libdir}/girepository-1.0/Tracker-%{abiver}.typelib
 %dir %{_libdir}/tracker-%{abiver}
+%if %{with libsoup2}
+%attr(755,root,root) %{_libdir}/tracker-%{abiver}/libtracker-http-soup2.so
+%endif
 %if %{with libsoup3}
-%attr(755,root,root) %{_libdir}/tracker-%{abiver}/libtracker-remote-soup3.so
-%else
-%attr(755,root,root) %{_libdir}/tracker-%{abiver}/libtracker-remote-soup2.so
+%attr(755,root,root) %{_libdir}/tracker-%{abiver}/libtracker-http-soup3.so
 %endif
 
 %files devel
