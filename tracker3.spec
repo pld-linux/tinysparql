@@ -12,7 +12,7 @@ Summary:	Tracker 3 - an indexing subsystem
 Summary(pl.UTF-8):	Tracker 3 - podsystem indeksujący
 Name:		tracker3
 Version:	3.4.1
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Applications
 Source0:	https://download.gnome.org/sources/tracker/3.4/tracker-%{version}.tar.xz
@@ -71,7 +71,7 @@ Requires:	json-glib >= 1.4
 %{?with_libsoup2:Requires:	libsoup >= 2.40}
 %{?with_libsoup3:Requires:	libsoup3 >= 2.99.2}
 Requires:	libxml2 >= 1:2.6.31
-Requires:	sqlite3 >= 3.35.2
+Requires:	sqlite3-libs >= 3.35.2
 
 %description libs
 Tracker 3 library.
