@@ -11,19 +11,20 @@
 Summary:	Tracker 3 - an indexing subsystem
 Summary(pl.UTF-8):	Tracker 3 - podsystem indeksujący
 Name:		tracker3
-Version:	3.4.2
-Release:	3
+Version:	3.5.3
+Release:	1
 License:	GPL v2+
 Group:		Applications
-Source0:	https://download.gnome.org/sources/tracker/3.4/tracker-%{version}.tar.xz
-# Source0-md5:	161d074eeae05dffc77911f12cf5ec14
+Source0:	https://download.gnome.org/sources/tracker/3.5/tracker-%{version}.tar.xz
+# Source0-md5:	f78a0d145007d9871174be21a49ce9ef
 URL:		https://wiki.gnome.org/Projects/Tracker
 BuildRequires:	asciidoc
 BuildRequires:	dbus-devel >= 1.3.1
 BuildRequires:	gettext-tools
+%{?with_apidocs:BuildRequires:	gi-docgen}
 BuildRequires:	glib2-devel >= 1:2.52.0
 BuildRequires:	gobject-introspection-devel >= 0.10.0
-BuildRequires:	graphviz
+%{?with_apidocs:BuildRequires:	graphviz}
 # dist tarballs contain pregenerated docs
 #BuildRequires:	hotdoc
 BuildRequires:	json-glib-devel >= 1.4
@@ -35,7 +36,7 @@ BuildRequires:	libstemmer-devel
 BuildRequires:	libuuid-devel
 BuildRequires:	libxml2-devel >= 1:2.6.31
 BuildRequires:	libxslt-progs
-BuildRequires:	meson >= 0.53
+BuildRequires:	meson >= 0.55
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
 BuildRequires:	python3 >= 1:3.2
@@ -46,6 +47,7 @@ BuildRequires:	sqlite3-devel >= 3.35.2
 BuildRequires:	tar >= 1:1.22
 %{?with_vala:BuildRequires:	vala >= 2:0.18.0}
 %{?with_libsoup3:BuildRequires:	vala-libsoup3 >= 2.99.2}
+%{?with_apidocs:BuildRequires:	xmlto}
 BuildRequires:	xz
 BuildRequires:	zlib-devel
 Requires(post,postun):	glib2 >= 1:2.52.0
@@ -188,6 +190,12 @@ rm -rf $RPM_BUILD_ROOT
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/tracker-%{abiver}/libtracker-*.a
 %endif
 
+%if %{with apidocs}
+# FIXME: where to package gi-docgen generated docs?
+install -d $RPM_BUILD_ROOT%{_gtkdocdir}
+%{__mv} $RPM_BUILD_ROOT%{_docdir}/Tracker-* $RPM_BUILD_ROOT%{_gtkdocdir}
+%endif
+
 %find_lang tracker3
 
 %clean
@@ -236,6 +244,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with libsoup3}
 %attr(755,root,root) %{_libdir}/tracker-%{abiver}/libtracker-http-soup3.so
 %endif
+%attr(755,root,root) %{_libdir}/tracker-%{abiver}/libtracker-parser-libicu.so
 
 %files devel
 %defattr(644,root,root,755)
@@ -260,7 +269,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with apidocs}
 %files apidocs
 %defattr(644,root,root,755)
-%{_datadir}/devhelp/books/Tracker
+%{_gtkdocdir}/Tracker-3.0
 %endif
 
 %files -n bash-completion-tracker3
