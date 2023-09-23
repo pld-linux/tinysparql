@@ -11,12 +11,12 @@
 Summary:	Tracker 3 - an indexing subsystem
 Summary(pl.UTF-8):	Tracker 3 - podsystem indeksujący
 Name:		tracker3
-Version:	3.5.3
+Version:	3.6.0
 Release:	1
 License:	GPL v2+
 Group:		Applications
-Source0:	https://download.gnome.org/sources/tracker/3.5/tracker-%{version}.tar.xz
-# Source0-md5:	f78a0d145007d9871174be21a49ce9ef
+Source0:	https://download.gnome.org/sources/tracker/3.6/tracker-%{version}.tar.xz
+# Source0-md5:	7be27edcf56214277cdff6ebfd8cfbf0
 URL:		https://wiki.gnome.org/Projects/Tracker
 BuildRequires:	asciidoc
 BuildRequires:	dbus-devel >= 1.3.1
@@ -36,7 +36,7 @@ BuildRequires:	libstemmer-devel
 BuildRequires:	libuuid-devel
 BuildRequires:	libxml2-devel >= 1:2.6.31
 BuildRequires:	libxslt-progs
-BuildRequires:	meson >= 0.55
+BuildRequires:	meson >= 0.62
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
 BuildRequires:	python3 >= 1:3.2
@@ -262,8 +262,10 @@ rm -rf $RPM_BUILD_ROOT
 %files testutils
 %defattr(644,root,root,755)
 %dir %{_libdir}/tracker-%{abiver}/trackertestutils
+%attr(755,root,root) %{_libdir}/tracker-%{abiver}/trackertestutils/tracker-await-file
 %attr(755,root,root) %{_libdir}/tracker-%{abiver}/trackertestutils/tracker-sandbox
 %{_libdir}/tracker-%{abiver}/trackertestutils/*.py
+%{_libdir}/tracker-%{abiver}/trackertestutils/await_file
 %{_pkgconfigdir}/tracker-testutils-%{abiver}.pc
 
 %if %{with apidocs}
