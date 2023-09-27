@@ -42,7 +42,7 @@ BuildRequires:	pkgconfig
 BuildRequires:	python3 >= 1:3.2
 BuildRequires:	python3-pygobject3
 BuildRequires:	rpm-build >= 4.6
-BuildRequires:	rpmbuild(macros) >= 2.011
+BuildRequires:	rpmbuild(macros) >= 2.029
 BuildRequires:	sqlite3-devel >= 3.35.2
 BuildRequires:	tar >= 1:1.22
 %{?with_vala:BuildRequires:	vala >= 2:0.18.0}
@@ -129,7 +129,6 @@ Narzędzia testowe Trackera 3.
 Summary:	Tracker 3 library API documentation
 Summary(pl.UTF-8):	Dokumentacja API biblioteki Trackera 3
 Group:		Documentation
-Requires:	gtk-doc-common
 BuildArch:	noarch
 
 %description apidocs
@@ -191,9 +190,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %if %{with apidocs}
-# FIXME: where to package gi-docgen generated docs?
-install -d $RPM_BUILD_ROOT%{_gtkdocdir}
-%{__mv} $RPM_BUILD_ROOT%{_docdir}/Tracker-* $RPM_BUILD_ROOT%{_gtkdocdir}
+install -d $RPM_BUILD_ROOT%{_gidocdir}
+%{__mv} $RPM_BUILD_ROOT%{_docdir}/Tracker-* $RPM_BUILD_ROOT%{_gidocdir}
 %endif
 
 %find_lang tracker3
@@ -271,7 +269,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with apidocs}
 %files apidocs
 %defattr(644,root,root,755)
-%{_gtkdocdir}/Tracker-3.0
+%{_gidocdir}/Tracker-3.0
 %endif
 
 %files -n bash-completion-tracker3
