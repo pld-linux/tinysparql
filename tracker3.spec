@@ -11,12 +11,12 @@
 Summary:	Tracker 3 - an indexing subsystem
 Summary(pl.UTF-8):	Tracker 3 - podsystem indeksujący
 Name:		tracker3
-Version:	3.6.0
+Version:	3.7.0
 Release:	1
 License:	GPL v2+
 Group:		Applications
-Source0:	https://download.gnome.org/sources/tracker/3.6/tracker-%{version}.tar.xz
-# Source0-md5:	7be27edcf56214277cdff6ebfd8cfbf0
+Source0:	https://download.gnome.org/sources/tracker/3.7/tracker-%{version}.tar.xz
+# Source0-md5:	5eb3bc0b8082859c095febb11d134729
 URL:		https://wiki.gnome.org/Projects/Tracker
 BuildRequires:	asciidoc
 BuildRequires:	dbus-devel >= 1.3.1
@@ -142,7 +142,7 @@ Summary:	Bash completion for tracker3 command
 Summary(pl.UTF-8):	Bashowe uzupełnianie parametrów dla polecenia tracker3
 Group:		Applications/Shells
 Requires:	%{name} = %{version}-%{release}
-Requires:	bash-completion >= 2.0
+Requires:	bash-completion >= 1:2.0
 BuildArch:	noarch
 
 %description -n bash-completion-tracker3
@@ -211,14 +211,13 @@ rm -rf $RPM_BUILD_ROOT
 %files -f tracker3.lang
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/tracker3
+%attr(755,root,root) %{_bindir}/tracker3-endpoint
+%attr(755,root,root) %{_bindir}/tracker3-export
+%attr(755,root,root) %{_bindir}/tracker3-help
+%attr(755,root,root) %{_bindir}/tracker3-import
+%attr(755,root,root) %{_bindir}/tracker3-sparql
+%attr(755,root,root) %{_bindir}/tracker3-sql
 %attr(755,root,root) %{_libexecdir}/tracker-xdg-portal-3
-%dir %{_libexecdir}/tracker3
-%attr(755,root,root) %{_libexecdir}/tracker3/endpoint
-%attr(755,root,root) %{_libexecdir}/tracker3/export
-%attr(755,root,root) %{_libexecdir}/tracker3/help
-%attr(755,root,root) %{_libexecdir}/tracker3/import
-%attr(755,root,root) %{_libexecdir}/tracker3/sparql
-%attr(755,root,root) %{_libexecdir}/tracker3/sql
 %{_datadir}/dbus-1/services/org.freedesktop.portal.Tracker.service
 %{_datadir}/tracker3
 %{systemduserunitdir}/tracker-xdg-portal-3.service
