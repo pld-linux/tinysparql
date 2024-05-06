@@ -11,12 +11,12 @@
 Summary:	Tracker 3 - an indexing subsystem
 Summary(pl.UTF-8):	Tracker 3 - podsystem indeksujący
 Name:		tracker3
-Version:	3.7.2
+Version:	3.7.3
 Release:	1
 License:	GPL v2+
 Group:		Applications
 Source0:	https://download.gnome.org/sources/tracker/3.7/tracker-%{version}.tar.xz
-# Source0-md5:	5f15dfe3b50e17b5baf62dc8aebb7be3
+# Source0-md5:	65cd2945506b7303e9eea493d56431d8
 URL:		https://wiki.gnome.org/Projects/Tracker
 BuildRequires:	asciidoc
 BuildRequires:	dbus-devel >= 1.3.1
