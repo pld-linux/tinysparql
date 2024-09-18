@@ -1,0 +1,20 @@
+--- tinysparql-3.8.0/src/libtracker-common/tracker-parser-libunistring.c.orig	2024-09-16 11:54:59.000000000 +0200
++++ tinysparql-3.8.0/src/libtracker-common/tracker-parser-libunistring.c	2024-09-18 20:17:03.496003832 +0200
+@@ -301,14 +301,15 @@ process_word_utf8 (TrackerParser
+ 
+ 	/* Stemming needed? */
+ 	if (parser->enable_stemmer) {
++		gint new_length = new_word_length;
+ 		tracker_language_stem_word (parser->language,
+ 		                            normalized,
+-		                            &new_word_length,
++		                            &new_length,
+ 		                            new_word_length);
+ 
+ 		/* Log after stemming */
+ 		tracker_parser_message_hex ("   After stemming",
+-		                            normalized, new_word_length);
++		                            normalized, new_length);
+ 	}
+ 
+ 	/* It may be the case that no stripping and no stemming was needed, and

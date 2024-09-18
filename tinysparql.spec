@@ -15,6 +15,7 @@ License:	GPL v2+
 Group:		Applications
 Source0:	https://download.gnome.org/sources/tinysparql/3.8/%{name}-%{version}.tar.xz
 # Source0-md5:	b265db81d1292d405945dbeb168a361b
+Patch0:		%{name}-types.patch
 URL:		https://gnome.pages.gitlab.gnome.org/tinysparql/
 BuildRequires:	asciidoc
 BuildRequires:	dbus-devel >= 1.3.1
@@ -152,6 +153,7 @@ API TinySPARQL/TrackerSPARQL 3 dla języka Vala.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 CPPFLAGS="%{rpmcppflags} -I/usr/include/libstemmer"
