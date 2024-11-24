@@ -9,12 +9,12 @@
 Summary:	TinySPARQL - complete RDF triplestore with SPARQL 1.1 interface
 Summary(pl.UTF-8):	TinySPARQL - pełna implementacja przechowywania trójek RDF z interfejsem SPARQL 1.1
 Name:		tinysparql
-Version:	3.8.0
+Version:	3.8.1
 Release:	1
 License:	GPL v2+
 Group:		Applications
 Source0:	https://download.gnome.org/sources/tinysparql/3.8/%{name}-%{version}.tar.xz
-# Source0-md5:	b265db81d1292d405945dbeb168a361b
+# Source0-md5:	2bbdce836d0207ebdb508fe676a1ac7e
 Patch0:		%{name}-types.patch
 URL:		https://gnome.pages.gitlab.gnome.org/tinysparql/
 BuildRequires:	asciidoc
