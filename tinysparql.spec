@@ -9,15 +9,17 @@
 Summary:	TinySPARQL - complete RDF triplestore with SPARQL 1.1 interface
 Summary(pl.UTF-8):	TinySPARQL - pełna implementacja przechowywania trójek RDF z interfejsem SPARQL 1.1
 Name:		tinysparql
-Version:	3.8.1
+Version:	3.9.2
 Release:	1
 License:	GPL v2+
 Group:		Applications
-Source0:	https://download.gnome.org/sources/tinysparql/3.8/%{name}-%{version}.tar.xz
-# Source0-md5:	2bbdce836d0207ebdb508fe676a1ac7e
+Source0:	https://download.gnome.org/sources/tinysparql/3.9/%{name}-%{version}.tar.xz
+# Source0-md5:	0a862bbde0b653668e84ab30869aa35e
 Patch0:		%{name}-types.patch
 URL:		https://gnome.pages.gitlab.gnome.org/tinysparql/
 BuildRequires:	asciidoc
+BuildRequires:	avahi-devel
+BuildRequires:	avahi-glib-devel
 BuildRequires:	dbus-devel >= 1.3.1
 BuildRequires:	gettext-tools
 %{?with_apidocs:BuildRequires:	gi-docgen}
@@ -38,7 +40,7 @@ BuildRequires:	pkgconfig
 BuildRequires:	python3 >= 1:3.2
 BuildRequires:	python3-pygobject3
 BuildRequires:	rpm-build >= 4.6
-BuildRequires:	rpmbuild(macros) >= 2.029
+BuildRequires:	rpmbuild(macros) >= 2.042
 BuildRequires:	sqlite3-devel >= 3.35.2
 BuildRequires:	tar >= 1:1.22
 %{?with_vala:BuildRequires:	vala >= 2:0.18.0}
@@ -157,19 +159,21 @@ API TinySPARQL/TrackerSPARQL 3 dla języka Vala.
 
 %build
 CPPFLAGS="%{rpmcppflags} -I/usr/include/libstemmer"
-%meson build \
+%meson \
 	%{!?with_static_libs:--default-library=shared} \
+	-Davahi=enabled \
 	-Dbash_completion_dir=%{bash_compdir} \
 	%{!?with_apidocs:-Ddocs=false} \
+	-Dstemmer=enabled \
 	-Dsystemd_user_services_dir=%{systemduserunitdir} \
 	-Dunicode_support=%{?with_icu:icu}%{!?with_icu:unistring}
 
-%ninja_build -C build -j1
+%meson_build -j1
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%ninja_install -C build
+%meson_install
 
 %if %{with apidocs}
 install -d $RPM_BUILD_ROOT%{_gidocdir}
