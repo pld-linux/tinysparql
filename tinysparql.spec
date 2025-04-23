@@ -153,7 +153,7 @@ API TinySPARQL/TrackerSPARQL 3 dla języka Vala.
 
 %prep
 %setup -q
-%patch0 -p1
+%patch -P0 -p1
 
 %build
 CPPFLAGS="%{rpmcppflags} -I/usr/include/libstemmer"
