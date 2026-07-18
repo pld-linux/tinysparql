@@ -9,18 +9,19 @@
 Summary:	TinySPARQL - complete RDF triplestore with SPARQL 1.1 interface
 Summary(pl.UTF-8):	TinySPARQL - pełna implementacja przechowywania trójek RDF z interfejsem SPARQL 1.1
 Name:		tinysparql
-Version:	3.9.2
-Release:	2
+Version:	3.11.1
+Release:	1
 License:	GPL v2+
 Group:		Applications
-Source0:	https://download.gnome.org/sources/tinysparql/3.9/%{name}-%{version}.tar.xz
-# Source0-md5:	0a862bbde0b653668e84ab30869aa35e
+Source0:	https://download.gnome.org/sources/tinysparql/3.11/%{name}-%{version}.tar.xz
+# Source0-md5:	aa793424c64c06b50248969f3e9d553d
 Patch0:		%{name}-types.patch
 URL:		https://gnome.pages.gitlab.gnome.org/tinysparql/
 BuildRequires:	asciidoc
 BuildRequires:	avahi-devel
 BuildRequires:	avahi-glib-devel
 BuildRequires:	dbus-devel >= 1.3.1
+BuildRequires:	gcc >= 6:3.2
 BuildRequires:	gettext-tools
 %{?with_apidocs:BuildRequires:	gi-docgen}
 BuildRequires:	glib2-devel >= 1:2.52.0
@@ -213,26 +214,26 @@ rm -rf $RPM_BUILD_ROOT
 %files libs
 %defattr(644,root,root,755)
 %doc AUTHORS COPYING MAINTAINERS NEWS README.md
-%attr(755,root,root) %{_libdir}/libtinysparql-%{abiver}.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libtinysparql-%{abiver}.so.0
+%{_libdir}/libtinysparql-%{abiver}.so.*.*.*
+%ghost %{_libdir}/libtinysparql-%{abiver}.so.0
 # compat symlinks
-%attr(755,root,root) %{_libdir}/libtracker-sparql-%{abiver}.so.*.*.*
-%attr(755,root,root) %{_libdir}/libtracker-sparql-%{abiver}.so.0
+%{_libdir}/libtracker-sparql-%{abiver}.so.*.*.*
+%{_libdir}/libtracker-sparql-%{abiver}.so.0
 %{_libdir}/girepository-1.0/Tracker-%{abiver}.typelib
 %{_libdir}/girepository-1.0/Tsparql-%{abiver}.typelib
 %dir %{_libdir}/tinysparql-%{abiver}
-%attr(755,root,root) %{_libdir}/tinysparql-%{abiver}/libtracker-http-soup3.so
+%{_libdir}/tinysparql-%{abiver}/libtracker-http-soup3.so
 %if %{with icu}
-%attr(755,root,root) %{_libdir}/tinysparql-%{abiver}/libtracker-parser-libicu.so
+%{_libdir}/tinysparql-%{abiver}/libtracker-parser-libicu.so
 %else
-%attr(755,root,root) %{_libdir}/tinysparql-%{abiver}/libtracker-parser-libunistring.so
+%{_libdir}/tinysparql-%{abiver}/libtracker-parser-libunistring.so
 %endif
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libtinysparql-%{abiver}.so
+%{_libdir}/libtinysparql-%{abiver}.so
 # compat symlink
-%attr(755,root,root) %{_libdir}/libtracker-sparql-%{abiver}.so
+%{_libdir}/libtracker-sparql-%{abiver}.so
 %{_includedir}/tinysparql-%{abiver}
 %{_pkgconfigdir}/tinysparql-%{abiver}.pc
 %{_pkgconfigdir}/tracker-sparql-%{abiver}.pc
